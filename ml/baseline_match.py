@@ -28,8 +28,8 @@ from sklearn.preprocessing import LabelEncoder
 warnings.filterwarnings(action="ignore")
 
 # ---------------------------------------------------------------------------
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-sys.path.insert(0, PROJECT_ROOT)
+BACKEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "backend"))
+sys.path.insert(0, BACKEND_DIR)
 
 
 # ---------------------------------------------------------------------------
@@ -37,7 +37,10 @@ sys.path.insert(0, PROJECT_ROOT)
 # ---------------------------------------------------------------------------
 def get_public_cases_data(status="NF"):
     """Fetch public submissions with face-mesh data."""
-    from pages.helper import db_queries
+    original_cwd = os.getcwd()
+    os.chdir(BACKEND_DIR)
+
+    import db_queries
 
     try:
         result = db_queries.fetch_public_cases(train_data=True, status=status)
@@ -50,16 +53,21 @@ def get_public_cases_data(status="NF"):
         for col in df.columns:
             if col != "label":
                 df[col] = pd.to_numeric(df[col], errors="coerce")
+        os.chdir(original_cwd)
         return df
     except Exception as e:
+        os.chdir(original_cwd)
         traceback.print_exc()
         return None
 
 
 def get_registered_cases_data(status="NF"):
     """Fetch registered cases with face-mesh data."""
-    from pages.helper.db_queries import engine
-    from pages.helper.data_models import RegisteredCases
+    original_cwd = os.getcwd()
+    os.chdir(BACKEND_DIR)
+
+    from db_queries import engine
+    from data_models import RegisteredCases
     from sqlmodel import Session, select
 
     try:
@@ -82,8 +90,10 @@ def get_registered_cases_data(status="NF"):
             for col in df.columns:
                 if col not in ["label", "status"]:
                     df[col] = pd.to_numeric(df[col], errors="coerce")
+            os.chdir(original_cwd)
             return df
     except Exception as e:
+        os.chdir(original_cwd)
         traceback.print_exc()
         return None
 

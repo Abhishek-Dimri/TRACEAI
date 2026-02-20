@@ -1,0 +1,28 @@
+# ============================================
+# College Project — Requirements
+# ============================================
+
+# Core
+pandas>=2.0
+numpy>=1.24
+
+# ML
+scikit-learn>=1.3
+
+# Database ORM
+sqlmodel>=0.0.14
+sqlalchemy>=2.0
+
+# Web UI
+streamlit>=1.30
+streamlit-authenticator==0.4.2
+
+# Face Mesh
+mediapipe>=0.10
+
+# Auth / hashing
+bcrypt>=4.0
+PyYAML>=6.0
+
+# Image handling
+Pillow>=10.0

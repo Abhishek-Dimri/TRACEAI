@@ -21,10 +21,26 @@ import yaml
 import bcrypt
 
 # ---------------------------------------------------------------------------
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-sys.path.insert(0, PROJECT_ROOT)
+# Look for login_config.yml in the main project folder (sibling of college_project)
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+COLLEGE_PROJECT_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
+PARENT_DIR = os.path.abspath(os.path.join(COLLEGE_PROJECT_DIR, ".."))
 
-CONFIG_PATH = os.path.join(PROJECT_ROOT, "login_config.yml")
+# Search common locations
+POSSIBLE_PATHS = [
+    os.path.join(PARENT_DIR, "Finding-missing-person-using-AI", "login_config.yml"),
+    os.path.join(COLLEGE_PROJECT_DIR, "login_config.yml"),
+    os.path.join(PARENT_DIR, "login_config.yml"),
+]
+
+CONFIG_PATH = None
+for p in POSSIBLE_PATHS:
+    if os.path.isfile(p):
+        CONFIG_PATH = p
+        break
+
+if CONFIG_PATH is None:
+    CONFIG_PATH = POSSIBLE_PATHS[0]  # fallback for error message
 
 
 def verify_config():

@@ -1,6 +1,25 @@
-week1.md
+# Model artifacts
+classifier.pkl
+*.pkl
 
-backend_engineer.zip
-frontend_developer.zip
+# Database files
+*.db
+sqlite_database.db
 
-backend_engineer/
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+.DS_Store
+
+# Archives
+*.zip
+
+# Weekly reports (local only)
+weekly/

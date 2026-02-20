@@ -25,10 +25,10 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.neighbors import KNeighborsClassifier
 
 # ---------------------------------------------------------------------------
-# Add the project root so we can import helpers when running standalone
+# Add the sibling backend/ folder so we can import db_queries & data_models
 # ---------------------------------------------------------------------------
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-sys.path.insert(0, PROJECT_ROOT)
+BACKEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "backend"))
+sys.path.insert(0, BACKEND_DIR)
 
 
 # ---------------------------------------------------------------------------
@@ -44,9 +44,14 @@ def get_train_data(submitted_by: str):
     labels : pd.Series   — case IDs (used as class labels)
     features : pd.DataFrame — numeric face-mesh columns (fm_1 … fm_1404)
     """
-    from pages.helper import db_queries
+    # Change working directory to backend/ so SQLite DB is found
+    original_cwd = os.getcwd()
+    os.chdir(BACKEND_DIR)
 
+    import db_queries
     result = db_queries.get_training_data(submitted_by)
+
+    os.chdir(original_cwd)
 
     if not result:
         return pd.Series(dtype=str), pd.DataFrame()
